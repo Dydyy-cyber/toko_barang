@@ -1,3 +1,4 @@
+
 name: Build APK
 
 on:
@@ -8,9 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Ambil kode
         uses: actions/checkout@v4
+
+      - name: Periksa struktur folder
+        run: |
+          pwd
+          ls -la
+          find . -name pubspec.yaml
 
       - name: Pasang Java
         uses: actions/setup-java@v4
@@ -24,9 +32,11 @@ jobs:
           channel: stable
 
       - name: Install dependency
+        working-directory: .
         run: flutter pub get
 
       - name: Build APK
+        working-directory: .
         run: flutter build apk --release
 
       - name: Upload APK
